@@ -46,8 +46,9 @@ export async function createScene(){
 //возвращает настроенную камеру
 export function createCamera(){
     const camera = new THREE.PerspectiveCamera(
-        75, window.innerWidth / window.innerHeight, 0.5, 1000
+        75, window.innerWidth / window.innerHeight, 0.005, 1000
     );
-    camera.position.set( -2, 1, 2);
+    camera.position.set( 0, 2, 4);
+    camera.lookAt(2, -1, -2);
     return camera
 }
