@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { createScene, createCamera} from './scene.js';
 import { factories,createObject} from './items.js';
 import { objectsConfig} from './configs.js';
+import {initZones} from './zones.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { DragControls } from 'three/addons/controls/DragControls.js';
 
@@ -13,19 +14,32 @@ const camera = createCamera();
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
+const { green_zone, red_zone } = initZones(scene);
+
+
+
+//границы передвижения
+const bounds = new THREE.Box3(
+  new THREE.Vector3(-5, 0.5, -5),
+  new THREE.Vector3(5, 2, 3)
+);
+function clampInArea(object) {
+  object.position.x = THREE.MathUtils.clamp(object.position.x, bounds.min.x, bounds.max.x);
+  object.position.z = THREE.MathUtils.clamp(object.position.z, bounds.min.z, bounds.max.z);
+}
 
 const objects = objectsConfig.map(createObject);
 objects.forEach(o => scene.add(o));
-//const controls = new OrbitControls( camera, renderer.domElement );
-// controls.update() must be called after any manual changes to the camera's transform
 const draggableObjects = objects;
 const dragControls = new DragControls(draggableObjects, camera, renderer.domElement);
 dragControls.addEventListener('dragstart', (event) => {
   event.object.material.emissive.set(0x222222); // подсветка
 });
 
-dragControls.addEventListener('dragstart', (event) => {
+dragControls.addEventListener('drag', (event) => {
   event.object.material.emissive.set(0x222222);
+  event.object.position.y = 0;
+  clampInArea(event.object);
 });
 dragControls.addEventListener('dragend', (event) => {
   event.object.material.emissive.set(0x000000);

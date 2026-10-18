@@ -26,12 +26,13 @@ export const factories = {
   },
 };
 
-export function createObject({ type, position = [0,0,0], rotation = [0,0,0], ...params }) {
+export function createObject({ type, position = [0,0,0], rotation = [0,0,0], id = 'apple',likes = true,  ...params }) {
   const factory = factories[type];
   if (!factory) throw new Error(`Unknown type: ${type}`);
 
   const mesh = factory(params);
   mesh.position.set(...position);
   mesh.rotation.set(...rotation);
+  mesh.userData = {id: id,likes: likes,zone: null };
   return mesh;
 }
