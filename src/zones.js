@@ -15,8 +15,21 @@ export function initZones(scene){
     scene.add(red_zone);
     return { green_zone, red_zone };
 }
-export function checkZone(object,zone1,zone2){
-    const x = object.position.x;
-    const z = object.position.z;
 
+function isPointOverZone(point, zone) {
+  const local = zone.worldToLocal(point.clone());
+  const half = 1;
+  return Math.abs(local.x) <= half && Math.abs(local.z) <= half;
+}
+
+export function getZoneUnderObject(object,green_zone, red_zone) {
+  if (isPointOverZone(object.position, green_zone)) {
+    object.userData.zone = 'like';
+    return 'like'
+   };
+  if (isPointOverZone(object.position, red_zone)) {
+    object.userData.zone = 'dislike';
+    return 'dislike'
+   };
+  return null;
 }
