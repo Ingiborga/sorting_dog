@@ -50,5 +50,25 @@ export function createCamera(){
     );
     camera.position.set( 0, 1.7, 4);
     camera.lookAt(0, -2, -2);
+
     return camera
+}
+export async function createSound(camera){
+  const listener = new THREE.AudioListener();
+  camera.add(listener);
+  const loader = new THREE.AudioLoader();
+  const sound1 = new THREE.Audio(listener);
+  const sound2 = new THREE.Audio(listener);
+  const [buf1, buf2] = await Promise.all([
+    loader.loadAsync('../res/sound1.mp3'),
+    loader.loadAsync('../res/sound2.mp3'),
+  ]);
+  sound1.setBuffer(buf1);
+  sound1.setLoop(false);
+  sound1.setVolume(0.5);
+
+  sound2.setBuffer(buf2);
+  sound2.setLoop(false);
+  sound2.setVolume(0.5);
+  return { sound1, sound2 };
 }
