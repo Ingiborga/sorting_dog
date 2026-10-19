@@ -7,6 +7,8 @@ import {initZones, getZoneUnderObject} from './zones.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { DragControls } from 'three/addons/controls/DragControls.js';
 
+const resultText = document.getElementById('resultText');
+const checkBtn = document.getElementById('check');
 
 const scene = await createScene();
 
@@ -47,7 +49,24 @@ dragControls.addEventListener('dragend', (event) => {
   console.log(event.object.userData);
 });
 
+document.getElementById("check").addEventListener('click', () => {
+  let correct = 0;
 
+  for (const object of objects) {
+    let isCorrect=false;
+    if (object.userData.zone == object.userData.likes)isCorrect=true;
+    else isCorrect=false;
+
+    if (isCorrect) {
+      correct++;
+      object.material.color.set(0x00ff00);
+    } else {
+      object.material.color.set(0xff0000);
+    }
+  }
+
+resultText.innerText = `Правильно: ${correct} из ${objects.length}`;
+});
 
 function animate() {
   requestAnimationFrame(animate);

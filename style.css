@@ -1,0 +1,20 @@
+.overlay-btn {
+  position: fixed;
+  top: 55px;
+  right: 20px;
+  z-index: 10;
+  width:20;
+  height:15;
+  color: #2563eb;
+  background-color: #FFFFE0;
+}
+.overlay-text {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  width:20;
+  height:15;
+  color: #2563eb;
+  background-color: #FFFFE0;
+}
